@@ -1,0 +1,2 @@
+# kurkureDataCollector
+ Jutt Project
