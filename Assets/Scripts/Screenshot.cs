@@ -66,7 +66,13 @@ public class Screenshot : MonoBehaviour
         print(filePath);
     }
 
-     
+    public void TakeAgain()
+    {
+        previewImage.gameObject.SetActive(false);
+        captureButton.SetActive(true);
+    }
+
+
 
 
 
