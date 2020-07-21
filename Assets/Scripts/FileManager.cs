@@ -1,23 +1,34 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class FileManager : MonoBehaviour
 {
 
     [SerializeField] private PotionData _PotionData = new PotionData();
 
+    public Text progress;
+
     public void SaveIntoJson()
     {
         string potion = JsonUtility.ToJson(_PotionData);
         File.WriteAllText(Application.persistentDataPath + "/PotionData.json", potion);
     }
-
+    int index = 0;
     public void CompressFolder()
     {
-        lzip.compressDir( Application.persistentDataPath, 3, Application.persistentDataPath+"/userdata.zip");
+        //var folder = Directory.CreateDirectory(Application.persistentDataPath + "/Zips/"); // returns a DirectoryInfo object
+
+        string source = Application.persistentDataPath+"/Data";
+        string destination = Application.persistentDataPath+"/Zips/userdata"+index+".zip";
+        index++;
+        ZipFile.CreateFromDirectory(source,destination);
+
     }
 
     void DeleteAllFiles()
@@ -36,36 +47,40 @@ public class FileManager : MonoBehaviour
         }
     }
 
-
-    IEnumerator PrepareFile()
+    public void UploadZip()
     {
-
-
-        // Read the zip file.
-        WWW loadTheZip = new WWW(Application.persistentDataPath + "/userdata.zip");
-
-        yield return loadTheZip;
-
-        PrepareStepTwo(loadTheZip);
+        StartCoroutine(UploadUserData());
     }
 
-    void PrepareStepTwo(WWW post)
-    {
-        StartCoroutine(UpLoadUserData(post));
-    }
 
-    IEnumerator UpLoadUserData(WWW post)
+    IEnumerator UploadUserData()
     {
 
         WWWForm form = new WWWForm();
-        form.AddBinaryData("myTestFile.zip",post.bytes,"myFile.zip","application / zip");
-        UnityWebRequest www = UnityWebRequest.Post("https://euphoriaxr.com/Files/ZipUpload.php", form);
-        yield return www.Send();
-        if (www.isNetworkError)
-            Debug.Log(www.error);
-        else
-            Debug.Log("Uploaded");
-        Debug.Log(www.downloadHandler.text);
+        string path = Application.persistentDataPath + "/Zips/userdata0.zip";
+        byte[] bytes = File.ReadAllBytes(path);
+        form.AddField("user_id", 1);
+        form.AddBinaryData("file", bytes, "userdata0.zip"); ;
+        UnityWebRequest webRequest = UnityWebRequest.Post("http://shopanalytica.com/public/api/save-zip-file", form);
+
+        webRequest.SendWebRequest();
+
+        while (!webRequest.isDone)
+        {
+            yield return null;
+
+            // Progress is always set to 1 on android
+            progress.text = "" + webRequest.uploadProgress;
+            Debug.LogFormat("Progress: {0}", webRequest.uploadProgress);
+        }
+
+
+        if (webRequest.isHttpError || webRequest.isNetworkError)
+                Debug.Log(webRequest.error);
+            else
+                Debug.Log("Request Done!:" + webRequest.downloadHandler.text);
+
+
     }
     // Update is called once per frame
     void Update()
@@ -80,7 +95,7 @@ public class FileManager : MonoBehaviour
             //SaveIntoJson();
             Debug.Log("Function Called");
             //CompressFolder();
-            StartCoroutine(PrepareFile());
+            StartCoroutine(UploadUserData());
         }
     }
 }

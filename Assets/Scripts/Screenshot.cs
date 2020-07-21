@@ -61,7 +61,7 @@ public class Screenshot : MonoBehaviour
     private void SaveImageToPath(Texture2D texture)
     {
         ImageCount++;
-        string filePath = Path.Combine(Application.persistentDataPath, "KurKure" + ImageCount + ".jpg");
+        string filePath = Path.Combine(Application.persistentDataPath+ "/Data", "KurKure" + ImageCount + ".jpg");
         File.WriteAllBytes(filePath, texture.EncodeToJPG());
         print(filePath);
     }
