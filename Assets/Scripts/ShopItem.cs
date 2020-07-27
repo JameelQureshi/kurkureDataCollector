@@ -10,12 +10,22 @@ public class ShopItem : MonoBehaviour
     
 
     // Start is called before the first frame update
-    public void Init(string shopName , string shopNumber , int id )
+    public void Init(string shopName , string shopNumber , int id ,string shopStatus)
     {
         shopNumberText.text = shopNumber;
         shopNameText.text = shopName;
         shopID = id;
-        GetComponent<Button>().onClick.AddListener(TaskOnClick);
+        if (shopStatus == "Pending")
+        {
+            GetComponent<Image>().color = Color.white;
+            GetComponent<Button>().onClick.AddListener(TaskOnClick);
+        }
+        else
+        {
+            GetComponent<Image>().color = Color.green;
+        }
+
+       
     }
 
     void TaskOnClick()

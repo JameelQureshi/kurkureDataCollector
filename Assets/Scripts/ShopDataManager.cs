@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -50,7 +51,8 @@ namespace ShopData {
         {
             if (CurrentDayShopInfo == "Loaded")
             {
-
+                UIManager.instance.ActivateScreen(2);
+                ShopDataCreator.instance.CreateShopList();
             }
             else
             {
@@ -88,40 +90,31 @@ namespace ShopData {
                 if (shopsInfo.success)
                 {
                     DataManager.instance.CreateCurrentDayShopInfo(shopsInfo);
+                    CreateShopStatusFile();
                 }
 
             }
 
         }
 
-        public void Populate()
-        {
-            GameObject item; // Create GameObject instance
+        void CreateShopStatusFile()
+        {   
+            ShopStatus shopStatus = new ShopStatus();
+            shopStatus.id = new List<int>();
+            shopStatus.status = new List<string>();
 
+            for (int i =0 ; i<shopsInfo.data.shops.Count;i++ )
+            {
 
-            try
-            {
-                for (int i = 0; i < shopsInfo.data.shops.Count ; i++)
-                {
-                    item = Instantiate(prefab, transform);
-                    item.GetComponent<ShopItem>().Init(shopsInfo.data.shops[i].name, (i+1).ToString(), shopsInfo.data.shops[i].id);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e);
+                shopStatus.id.Add(shopsInfo.data.shops[i].id);
+                shopStatus.status.Add("Pending");
+
             }
 
-            float width = canvas.GetComponent<RectTransform>().rect.width;
-            Vector2 newSize = new Vector2(width, 300);
-            GetComponent<GridLayoutGroup>().cellSize = newSize;
+            string data = JsonUtility.ToJson(shopStatus);
 
+            File.WriteAllText(Application.persistentDataPath + "/Data/ShopStatus.json", data);
         }
-
-
-
-
-
 
 
     }
@@ -153,6 +146,13 @@ namespace ShopData {
     {
         public bool success;
         public Data data;
+    }
+
+    [System.Serializable]
+    public class ShopStatus
+    {
+        public List<int> id;
+        public List<string> status;
     }
 }
 

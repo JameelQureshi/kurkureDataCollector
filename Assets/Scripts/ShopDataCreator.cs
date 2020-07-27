@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -11,21 +12,11 @@ namespace ShopData {
 
         public GameObject prefab;
         public GameObject canvas;
-        public ShopsInfo shopsInfo;
         public static ShopDataCreator instance;
-        const string getShopApi = "http://shopanalytica.com/public/api/getShopsByUser";
 
-        public static string CurrentDayShopInfo
-        {
-            set
-            {
-                PlayerPrefs.SetString("CurrentDayShopInfo", value);
-            }
-            get
-            {
-                return PlayerPrefs.GetString("CurrentDayShopInfo", "Empty");
-            }
-        }
+        public DataManager.DayData dayData;
+        public ShopStatus shopStatus;
+
 
         public void Awake()
         {
@@ -38,61 +29,21 @@ namespace ShopData {
                 Destroy(gameObject);
             }
         }
-        private void Update()
+       
+        public void CreateShopList()
         {
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                StartCoroutine(GetShopData());
-            }
+            string path = Application.persistentDataPath + "/Data/DayInfo.json";
+            string contents = File.ReadAllText(path);
+            dayData = JsonUtility.FromJson<DataManager.DayData>(contents);
+
+            string path1 = Application.persistentDataPath + "/Data/ShopStatus.json";
+            string contents1 = File.ReadAllText(path1);
+            shopStatus = JsonUtility.FromJson<ShopStatus>(contents1);
+            Populate();
+
         }
 
-        public void StartYourDay()
-        {
-            if (CurrentDayShopInfo == "Loaded")
-            {
-
-            }
-            else
-            {
-                StartCoroutine(GetShopData());
-            }
-        }
-
-
-        IEnumerator GetShopData()
-        {
-
-            WWWForm form = new WWWForm();
-
-            UnityWebRequest webRequest = UnityWebRequest.Get(getShopApi+"/"+LoginManager.UserID);
-
-            webRequest.SendWebRequest();
-
-            while (!webRequest.isDone)
-            {
-                yield return null;
-
-                // Progress is always set to 1 on android
-                // Debug.LogFormat("Progress: {0}", webRequest.uploadProgress);
-            }
-
-
-            if (webRequest.isHttpError || webRequest.isNetworkError)
-            {
-                Debug.Log(webRequest.error);
-            }
-            else
-            {
-                Debug.Log("Request Done!:" + webRequest.downloadHandler.text);  
-                shopsInfo = JsonUtility.FromJson<ShopsInfo>(webRequest.downloadHandler.text);
-                if (shopsInfo.success)
-                {
-                    DataManager.instance.CreateCurrentDayShopInfo(shopsInfo);
-                }
-
-            }
-
-        }
+      
 
         public void Populate()
         {
@@ -101,10 +52,10 @@ namespace ShopData {
 
             try
             {
-                for (int i = 0; i < shopsInfo.data.shops.Count ; i++)
+                for (int i = 0; i < dayData.shops.Count ; i++)
                 {
                     item = Instantiate(prefab, transform);
-                    item.GetComponent<ShopItem>().Init(shopsInfo.data.shops[i].name, (i+1).ToString(), shopsInfo.data.shops[i].id);
+                    item.GetComponent<ShopItem>().Init(dayData.shops[i].shop_Name, (i+1).ToString(), dayData.shops[i].id,CheackShopStatus(dayData.shops[i].id));
                 }
             }
             catch (Exception e)
@@ -118,42 +69,27 @@ namespace ShopData {
 
         }
 
+        string CheackShopStatus(int id)
+        {
+            for (int i = 0; i<shopStatus.id.Count; i++)
+            {
+                if (id == shopStatus.id[i])
+                {
+                   return shopStatus.status[i];
+                }
+            }
+            return "Pending";
+        }
 
 
 
 
 
 
-    }
-
-    [System.Serializable]
-    public class Sku
-    {
-        public int id;
-        public string name;
-    }
-    [System.Serializable]
-    public class Shop
-    {
-        public int id;
-        public string name;
-        public string address;
-        public int user_day;
 
     }
-    [System.Serializable]
-    public class Data
-    {
-        public List<Sku> sku;
-        public List<Shop> shops;
 
-    }
-    [System.Serializable]
-    public class ShopsInfo
-    {
-        public bool success;
-        public Data data;
-    }
+
 }
 
 

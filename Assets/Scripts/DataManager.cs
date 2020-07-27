@@ -54,6 +54,7 @@ public class DataManager : MonoBehaviour
                 shop.sku.Add(sku);
             }
             dayData.shops.Add(shop);
+
         }
 
 
@@ -61,6 +62,7 @@ public class DataManager : MonoBehaviour
 
         string data = JsonUtility.ToJson(dayData);
         File.WriteAllText(Application.persistentDataPath + "/Data/DayInfo.json", data);
+        ShopData.ShopDataManager.CurrentDayShopInfo = "Loaded";
 
     }
 
