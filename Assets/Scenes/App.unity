@@ -6648,6 +6648,13 @@ MonoBehaviour:
   sku4: {fileID: 277943293}
   sku5: {fileID: 1886664975}
   sku6: {fileID: 1551333959}
+  skuText:
+  - {fileID: 1236706129}
+  - {fileID: 529126656}
+  - {fileID: 856972912}
+  - {fileID: 175125546}
+  - {fileID: 1540306761}
+  - {fileID: 1165194209}
 --- !u!1 &1382952837
 GameObject:
   m_ObjectHideFlags: 0
@@ -7120,6 +7127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 809721683899163820, guid: cbdab89bd1a8e4498aae1128c8a7c3d3, type: 3}
   canvas: {fileID: 1691291834}
+  dayText: {fileID: 1128318797}
 --- !u!1 &1446121063
 GameObject:
   m_ObjectHideFlags: 0

@@ -48,6 +48,10 @@ public class ShopFormManager : MonoBehaviour
     public InputField sku5;
     public InputField sku6;
 
+    public Text[] skuText;
+
+
+
     // Update is called once per frame
     public void UpdateForm()
     {
@@ -68,6 +72,10 @@ public class ShopFormManager : MonoBehaviour
                 address.text = ShopDataCreator.shopStatus.address[i];
             }
         }
+        for (int i = 0; i < ShopDataCreator.shopStatus.sku.Count; i++)
+        {
+            skuText[i].text = ShopDataCreator.shopStatus.sku[i];
+        }
     }
 
     public void UpdateAddress(int id)
@@ -79,6 +87,7 @@ public class ShopFormManager : MonoBehaviour
                 shopName.text = ShopDataCreator.dayData.shops[i].shop_Name;
             }
         }
+
     }
 
     public void SubmitData()

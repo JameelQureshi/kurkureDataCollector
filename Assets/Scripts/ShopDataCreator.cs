@@ -12,8 +12,9 @@ namespace ShopData {
 
         public GameObject prefab;
         public GameObject canvas;
-        public static ShopDataCreator instance;
+        public Text dayText;
 
+        public static ShopDataCreator instance;
         public static DataManager.DayData dayData;
         public static ShopStatus shopStatus;
 
@@ -39,6 +40,8 @@ namespace ShopData {
             string path1 = Application.persistentDataPath + "/Data/ShopStatus.json";
             string contents1 = File.ReadAllText(path1);
             shopStatus = JsonUtility.FromJson<ShopStatus>(contents1);
+
+            dayText.text = "Day " +LoginManager.CurrentDay; 
             Populate();
 
         }
