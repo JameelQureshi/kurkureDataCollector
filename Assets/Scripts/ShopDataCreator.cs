@@ -14,8 +14,8 @@ namespace ShopData {
         public GameObject canvas;
         public static ShopDataCreator instance;
 
-        public DataManager.DayData dayData;
-        public ShopStatus shopStatus;
+        public static DataManager.DayData dayData;
+        public static ShopStatus shopStatus;
 
 
         public void Awake()
@@ -29,7 +29,7 @@ namespace ShopData {
                 Destroy(gameObject);
             }
         }
-       
+
         public void CreateShopList()
         {
             string path = Application.persistentDataPath + "/Data/DayInfo.json";
@@ -43,7 +43,7 @@ namespace ShopData {
 
         }
 
-      
+
 
         public void Populate()
         {
@@ -52,10 +52,10 @@ namespace ShopData {
 
             try
             {
-                for (int i = 0; i < dayData.shops.Count ; i++)
+                for (int i = 0; i < dayData.shops.Count; i++)
                 {
                     item = Instantiate(prefab, transform);
-                    item.GetComponent<ShopItem>().Init(dayData.shops[i].shop_Name, (i+1).ToString(), dayData.shops[i].id,CheackShopStatus(dayData.shops[i].id));
+                    item.GetComponent<ShopItem>().Init(dayData.shops[i].shop_Name, (i + 1).ToString(), dayData.shops[i].id, CheackShopStatus(dayData.shops[i].id));
                 }
             }
             catch (Exception e)
@@ -71,25 +71,78 @@ namespace ShopData {
 
         string CheackShopStatus(int id)
         {
-            for (int i = 0; i<shopStatus.id.Count; i++)
+            for (int i = 0; i < shopStatus.id.Count; i++)
             {
                 if (id == shopStatus.id[i])
                 {
-                   return shopStatus.status[i];
+                    return shopStatus.status[i];
                 }
             }
             return "Pending";
         }
 
+        public static void SaveImageStatus(int id,int currentImage,string imageName)
+        {
+            for (int i = 0; i < shopStatus.id.Count; i++)
+            {
+                if (id == shopStatus.id[i])
+                {
+                    switch (currentImage)
+                    {
+                        case 1:
+                            shopStatus.image1Status[i] = "Done";
+                            break;
+                        case 2:
+                            shopStatus.image2Status[i] = "Done";
+                            break;
+                        case 3:
+                            shopStatus.image3Status[i] = "Done";
+                            break;
+                        case 4:
+                            shopStatus.image4Status[i] = "Done";
+                            break;
+                    }
+                }
+            }
 
+            for (int i = 0; i < dayData.shops.Count; i++)
+            {
+                if (id == dayData.shops[i].id)
+                {
+                    switch (currentImage)
+                    {
+                        case 1:
+                            dayData.shops[i].pic_Name_1 = imageName;
+                            break;
+                        case 2:
+                            dayData.shops[i].pic_Name_2 = imageName;
+                            break;
+                        case 3:
+                            dayData.shops[i].pic_Name_3 = imageName;
+                            break;
+                        case 4:
+                            dayData.shops[i].pic_Name_4 = imageName;
+                            break;
+                    }
+                }
+            }
+            SaveCurrentProgress();
+        }
 
+        public static void SaveCurrentProgress()
+        {
+            string data = JsonUtility.ToJson(dayData);
+            File.WriteAllText(Application.persistentDataPath + "/Data/DayInfo.json", data);
 
-
+            string data1 = JsonUtility.ToJson(shopStatus);
+            File.WriteAllText(Application.persistentDataPath + "/Data/ShopStatus.json", data1);
+        }
 
 
     }
-
-
 }
+
+
+
 
 

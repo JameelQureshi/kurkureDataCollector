@@ -41,9 +41,12 @@ namespace ShopData {
         }
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.G))
+            if (Input.GetKeyDown(KeyCode.D))
             {
-                StartCoroutine(GetShopData());
+                //CreateShopStatusFile();
+                //LoginManager.LoginSuccess = "success";
+                //LoginManager.UserID = 1;
+                //CurrentDayShopInfo = "UnLoaded";
             }
         }
 
@@ -102,13 +105,20 @@ namespace ShopData {
             ShopStatus shopStatus = new ShopStatus();
             shopStatus.id = new List<int>();
             shopStatus.status = new List<string>();
+            shopStatus.image1Status = new List<string>();
+            shopStatus.image2Status = new List<string>();
+            shopStatus.image3Status = new List<string>();
+            shopStatus.image4Status = new List<string>();
 
             for (int i =0 ; i<shopsInfo.data.shops.Count;i++ )
             {
 
                 shopStatus.id.Add(shopsInfo.data.shops[i].id);
                 shopStatus.status.Add("Pending");
-
+                shopStatus.image1Status.Add("Pending");
+                shopStatus.image2Status.Add("Pending");
+                shopStatus.image3Status.Add("Pending");
+                shopStatus.image4Status.Add("Pending");
             }
 
             string data = JsonUtility.ToJson(shopStatus);
@@ -153,6 +163,10 @@ namespace ShopData {
     {
         public List<int> id;
         public List<string> status;
+        public List<string> image1Status;
+        public List<string> image2Status;
+        public List<string> image3Status;
+        public List<string> image4Status;
     }
 }
 

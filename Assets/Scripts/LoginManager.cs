@@ -47,6 +47,18 @@ public class LoginManager : MonoBehaviour
         }
     }
 
+    public static int CurrentDay
+    {
+        set
+        {
+            PlayerPrefs.SetInt("CurrentDay", value);
+        }
+        get
+        {
+            return PlayerPrefs.GetInt("CurrentDay",1);
+        }
+    }
+
     public void LoginUser()
     {
         if (username.text!="" && password.text!="")

@@ -48,6 +48,10 @@ public class UIManager : MonoBehaviour
         {
             ActivateScreen(1);  // menu screen is at index 1 
         }
+        else
+        {
+            ActivateScreen(0);
+        }
     }
 
 
@@ -62,8 +66,9 @@ public class UIManager : MonoBehaviour
 
 
 
-    public void StartDay()
+    public void OpenCamera(int currentImage)
     {
+        Screenshot.CurrentImage = currentImage;
         SceneManager.LoadScene(1);
     }
 

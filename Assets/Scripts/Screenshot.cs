@@ -5,6 +5,8 @@ using System.IO;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
+using ShopData;
+using UnityEngine.SceneManagement;
 
 public class Screenshot : MonoBehaviour
 {
@@ -12,16 +14,28 @@ public class Screenshot : MonoBehaviour
     public AudioClip imageCaptureAudio;
     public RawImage previewImage;
     public GameObject captureButton;
-   
-    public static int ImageCount
+    private Texture2D texture;
+    public static int CurrentID
     {
         set
         {
-            PlayerPrefs.SetInt("ImageCount", value);
+            PlayerPrefs.SetInt("CurrentID", value);
         }
         get
         {
-            return PlayerPrefs.GetInt("ImageCount");
+            return PlayerPrefs.GetInt("CurrentID");
+        }
+    }
+
+    public static int CurrentImage
+    {
+        set
+        {
+            PlayerPrefs.SetInt("CurrentImage", value);
+        }
+        get
+        {
+            return PlayerPrefs.GetInt("CurrentImage");
         }
     }
 
@@ -42,7 +56,7 @@ public class Screenshot : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
         // create a texture to pass to encoding
-        Texture2D texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24,false);
+        texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24,false);
         // put buffer into texture
         texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
         texture.Apply();
@@ -54,15 +68,18 @@ public class Screenshot : MonoBehaviour
         previewImage.texture = texture;
 
         //Save Image to path 
-        SaveImageToPath(texture);
+        //SaveImageToPath(texture);
 
     }
 
-    private void SaveImageToPath(Texture2D texture)
+    public void SaveImageToPath()
     {
-        ImageCount++;
-        string filePath = Path.Combine(Application.persistentDataPath+ "/Data", "KurKure" + ImageCount + ".jpg");
+        string fileName = "Image_" +LoginManager.UserID+ "_"+LoginManager.CurrentDay + "_" + CurrentID + "_" + CurrentImage ;
+        string filePath = Path.Combine(Application.persistentDataPath+ "/Data", fileName+ ".jpg");
         File.WriteAllBytes(filePath, texture.EncodeToJPG());
+
+        ShopDataCreator.SaveImageStatus(CurrentID,CurrentImage,fileName);
+        SceneManager.LoadScene(0);
         print(filePath);
     }
 
