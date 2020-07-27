@@ -32,6 +32,7 @@ public class ShopItem : MonoBehaviour
     {
         Debug.Log(shopID);
         UIManager.instance.ActivateScreen(3); // Shop   inputScreen is at 3
-        Screenshot.CurrentID = shopID;
+        ShopFormManager.CurrentID = shopID;
+        ShopFormManager.instance.UpdateForm();
     }
 }

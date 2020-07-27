@@ -15,18 +15,7 @@ public class Screenshot : MonoBehaviour
     public RawImage previewImage;
     public GameObject captureButton;
     private Texture2D texture;
-    public static int CurrentID
-    {
-        set
-        {
-            PlayerPrefs.SetInt("CurrentID", value);
-        }
-        get
-        {
-            return PlayerPrefs.GetInt("CurrentID");
-        }
-    }
-
+   
     public static int CurrentImage
     {
         set
@@ -74,11 +63,11 @@ public class Screenshot : MonoBehaviour
 
     public void SaveImageToPath()
     {
-        string fileName = "Image_" +LoginManager.UserID+ "_"+LoginManager.CurrentDay + "_" + CurrentID + "_" + CurrentImage ;
+        string fileName = "Image_" +LoginManager.UserID+ "_"+LoginManager.CurrentDay + "_" + ShopFormManager.CurrentID + "_" + CurrentImage ;
         string filePath = Path.Combine(Application.persistentDataPath+ "/Data", fileName+ ".jpg");
         File.WriteAllBytes(filePath, texture.EncodeToJPG());
 
-        ShopDataCreator.SaveImageStatus(CurrentID,CurrentImage,fileName);
+        ShopDataCreator.SaveImageStatus(ShopFormManager.CurrentID, CurrentImage,fileName);
         SceneManager.LoadScene(0);
         print(filePath);
     }

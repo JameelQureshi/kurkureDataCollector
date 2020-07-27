@@ -109,6 +109,7 @@ namespace ShopData {
             shopStatus.image2Status = new List<string>();
             shopStatus.image3Status = new List<string>();
             shopStatus.image4Status = new List<string>();
+            shopStatus.address = new List<string>();
 
             for (int i =0 ; i<shopsInfo.data.shops.Count;i++ )
             {
@@ -119,10 +120,10 @@ namespace ShopData {
                 shopStatus.image2Status.Add("Pending");
                 shopStatus.image3Status.Add("Pending");
                 shopStatus.image4Status.Add("Pending");
+                shopStatus.address.Add(shopsInfo.data.shops[i].address);
             }
 
             string data = JsonUtility.ToJson(shopStatus);
-
             File.WriteAllText(Application.persistentDataPath + "/Data/ShopStatus.json", data);
         }
 
@@ -167,6 +168,7 @@ namespace ShopData {
         public List<string> image2Status;
         public List<string> image3Status;
         public List<string> image4Status;
+        public List<string> address;
     }
 }
 
