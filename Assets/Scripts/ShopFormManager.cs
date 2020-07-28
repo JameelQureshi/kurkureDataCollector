@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using ShopData;
 using UnityEngine;
@@ -104,6 +105,7 @@ public class ShopFormManager : MonoBehaviour
                 && sku4.text!="" && sku5.text!="" && sku6.text!= "" )
                 {
                     ShopDataCreator.dayData.shops[i].shop_Name = shopName.text;
+                    ShopDataCreator.dayData.shops[i].checkOut = DateTime.UtcNow.ToString();
                     ShopDataCreator.dayData.shops[i].sku[0].count = int.Parse(sku1.text);
                     ShopDataCreator.dayData.shops[i].sku[1].count = int.Parse(sku2.text);
                     ShopDataCreator.dayData.shops[i].sku[2].count = int.Parse(sku3.text);
@@ -130,6 +132,7 @@ public class ShopFormManager : MonoBehaviour
                 {
                     Debug.Log("All Imgages Done");
                     ShopDataCreator.shopStatus.status[i] = "Done";
+
                     ShopDataCreator.SaveCurrentProgress();
 
                     SceneManager.LoadScene(0);

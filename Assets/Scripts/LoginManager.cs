@@ -102,6 +102,7 @@ public class LoginManager : MonoBehaviour
                 LoginSuccess = "success";
                 UserID = user.data.id;
                 Token = user.data.token;
+                FileManager.instance.CreateFolders();
                 UIManager.instance.CheackLogin();
             }
 

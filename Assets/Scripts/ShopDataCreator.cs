@@ -31,18 +31,20 @@ namespace ShopData {
             }
         }
 
-        public void CreateShopList()
+        public static void CreateShopList()
         {
-            string path = Application.persistentDataPath + "/Data/DayInfo.json";
-            string contents = File.ReadAllText(path);
-            dayData = JsonUtility.FromJson<DataManager.DayData>(contents);
+            if (ShopDataManager.CurrentDayShopInfo == "Loaded")
+            {
+                string path = Application.persistentDataPath + "/Data/DayInfo.json";
+                string contents = File.ReadAllText(path);
+                dayData = JsonUtility.FromJson<DataManager.DayData>(contents);
 
-            string path1 = Application.persistentDataPath + "/Data/ShopStatus.json";
-            string contents1 = File.ReadAllText(path1);
-            shopStatus = JsonUtility.FromJson<ShopStatus>(contents1);
+                string path1 = Application.persistentDataPath + "/Data/ShopStatus.json";
+                string contents1 = File.ReadAllText(path1);
+                shopStatus = JsonUtility.FromJson<ShopStatus>(contents1);
 
-            dayText.text = "Day " +LoginManager.CurrentDay; 
-            Populate();
+             
+            }
 
         }
 
@@ -51,7 +53,7 @@ namespace ShopData {
         public void Populate()
         {
             GameObject item; // Create GameObject instance
-
+            dayText.text = "Day " + LoginManager.CurrentDay;
 
             try
             {

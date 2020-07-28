@@ -10,8 +10,7 @@ namespace ShopData {
     public class ShopDataManager : MonoBehaviour
     {
 
-        public GameObject prefab;
-        public GameObject canvas;
+
         public ShopsInfo shopsInfo;
         public static ShopDataManager instance;
         const string getShopApi = "http://shopanalytica.com/public/api/getShopsByUser";
@@ -41,12 +40,12 @@ namespace ShopData {
         }
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.U))
             {
                 //CreateShopStatusFile();
                 //LoginManager.LoginSuccess = "success";
                 //LoginManager.UserID = 1;
-                //CurrentDayShopInfo = "UnLoaded";
+                CurrentDayShopInfo = "UnLoaded";
             }
         }
 
@@ -55,7 +54,12 @@ namespace ShopData {
             if (CurrentDayShopInfo == "Loaded")
             {
                 UIManager.instance.ActivateScreen(2);
-                ShopDataCreator.instance.CreateShopList();
+
+                if (ShopDataCreator.instance.transform.childCount==0)
+                {
+                    ShopDataCreator.instance.Populate();
+                }
+
             }
             else
             {
@@ -130,7 +134,15 @@ namespace ShopData {
 
             string data = JsonUtility.ToJson(shopStatus);
             File.WriteAllText(Application.persistentDataPath + "/Data/ShopStatus.json", data);
+
+            /// Load Local Json Data 
+            ShopDataCreator.CreateShopList();
+            UIManager.instance.ActivateScreen(2);
+            ShopDataCreator.instance.Populate();
+
         }
+
+
 
 
     }

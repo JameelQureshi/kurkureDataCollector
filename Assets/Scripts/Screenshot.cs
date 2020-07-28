@@ -14,6 +14,7 @@ public class Screenshot : MonoBehaviour
     public AudioClip imageCaptureAudio;
     public RawImage previewImage;
     public GameObject captureButton;
+    public GameObject closeButton;
     private Texture2D texture;
    
     public static int CurrentImage
@@ -36,6 +37,7 @@ public class Screenshot : MonoBehaviour
     public void TakeScreenShot() 
     {
         captureButton.SetActive(false);
+        closeButton.SetActive(false);
         audioSource.PlayOneShot(imageCaptureAudio);
         StartCoroutine(ScreenshotEncode());
     }
@@ -76,9 +78,13 @@ public class Screenshot : MonoBehaviour
     {
         previewImage.gameObject.SetActive(false);
         captureButton.SetActive(true);
+        closeButton.SetActive(true);
     }
 
-
+    public void CloseCamera()
+    {
+        SceneManager.LoadScene(0);
+    }
 
 
 

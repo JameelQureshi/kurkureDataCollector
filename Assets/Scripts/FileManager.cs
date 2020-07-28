@@ -10,57 +10,98 @@ using UnityEngine.UI;
 public class FileManager : MonoBehaviour
 {
 
-    [SerializeField] private PotionData _PotionData = new PotionData();
 
-    public Text progress;
+    public Image progressFill;
+    public Text  progressText;
+    public GameObject loadingObject;
+    private string ZipFileName;
 
-    public void SaveIntoJson()
+    public static FileManager instance;
+
+    public void Awake()
     {
-        string potion = JsonUtility.ToJson(_PotionData);
-        File.WriteAllText(Application.persistentDataPath + "/PotionData.json", potion);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
-    int index = 0;
+
+    public static int ZipIndex
+    {
+        set
+        {
+            PlayerPrefs.SetInt("ZipIndex", value);
+        }
+        get
+        {
+            return PlayerPrefs.GetInt("ZipIndex");
+        }
+    }
+
+    private void Start()
+    {
+        loadingObject.SetActive(false);
+
+       
+
+        if (ShopData.ShopDataManager.CurrentDayShopInfo == "Loaded")
+        {
+            ShopData.ShopDataCreator.CreateShopList();
+        }
+
+    }
+
+
+
+
+
     public void CompressFolder()
     {
-        //var folder = Directory.CreateDirectory(Application.persistentDataPath + "/Zips/"); // returns a DirectoryInfo object
-
         string source = Application.persistentDataPath+"/Data";
-        string destination = Application.persistentDataPath+"/Zips/userdata"+index+".zip";
-        index++;
+        ZipIndex++;
+        ZipFileName = LoginManager.UserID+"_"+ LoginManager.CurrentDay+"_"+ZipIndex;
+        string destination = Application.persistentDataPath+"/Zips/"+ ZipFileName+ ".zip";
         ZipFile.CreateFromDirectory(source,destination);
+        DeleteAllFiles();
+    }
 
+    public void CreateFolders()
+    {
+        var zipFolder = Directory.CreateDirectory(Application.persistentDataPath + "/Zips/"); // returns a DirectoryInfo object
+        var dataFolder = Directory.CreateDirectory(Application.persistentDataPath + "/Data/"); // returns a DirectoryInfo object
     }
 
     void DeleteAllFiles()
     {
-        foreach (var directory in Directory.GetDirectories(Application.persistentDataPath))
-        {
-            DirectoryInfo data_dir = new DirectoryInfo(directory);
-            data_dir.Delete(true);
-        }
 
-        foreach (var file in Directory.GetFiles(Application.persistentDataPath))
+        foreach (var file in Directory.GetFiles(Application.persistentDataPath + "/Data/"))
         {
             FileInfo file_info = new FileInfo(file);
             Debug.Log(file_info);
-            file_info.Delete();
+            if (!file_info.ToString().Contains(".json"))
+            {
+                file_info.Delete();
+            }
+           
         }
+        StartCoroutine(UploadUserData());
+        loadingObject.SetActive(true);
     }
 
-    public void UploadZip()
-    {
-        StartCoroutine(UploadUserData());
-    }
 
 
     IEnumerator UploadUserData()
     {
 
         WWWForm form = new WWWForm();
-        string path = Application.persistentDataPath + "/Zips/userdata0.zip";
+        string path = Application.persistentDataPath + "/Zips/"+ZipFileName+".zip";
         byte[] bytes = File.ReadAllBytes(path);
-        form.AddField("user_id", 1);
-        form.AddBinaryData("file", bytes, "userdata0.zip"); ;
+        form.AddField("user_id", LoginManager.UserID);
+        form.AddBinaryData("file", bytes, ZipFileName+".zip"); ;
         UnityWebRequest webRequest = UnityWebRequest.Post("http://shopanalytica.com/public/api/save-zip-file", form);
 
         webRequest.SendWebRequest();
@@ -70,15 +111,20 @@ public class FileManager : MonoBehaviour
             yield return null;
 
             // Progress is always set to 1 on android
-            progress.text = "" + webRequest.uploadProgress;
-            Debug.LogFormat("Progress: {0}", webRequest.uploadProgress);
+            progressText.text =  webRequest.uploadProgress*100+"%";
+            progressFill.fillAmount = webRequest.uploadProgress;
         }
 
 
-        if (webRequest.isHttpError || webRequest.isNetworkError)
-                Debug.Log(webRequest.error);
-            else
-                Debug.Log("Request Done!:" + webRequest.downloadHandler.text);
+        if (webRequest.isHttpError || webRequest.isNetworkError) {
+            Debug.Log(webRequest.error);
+        }
+        else {
+            Debug.Log("Request Done!:" + webRequest.downloadHandler.text);
+            loadingObject.SetActive(false);
+            //ShopData.ShopDataManager.CurrentDayShopInfo = "UnLoaded";
+        }
+
 
 
     }
@@ -87,30 +133,17 @@ public class FileManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            DeleteAllFiles();
+            //DeleteAllFiles();
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
             //SaveIntoJson();
             Debug.Log("Function Called");
+            CreateFolders();
             //CompressFolder();
-            StartCoroutine(UploadUserData());
+            //StartCoroutine(UploadUserData());
         }
     }
 }
 
-[System.Serializable]
-public class PotionData
-{
-    public string potion_name;
-    public int value;
-    public List<Effect> effect = new List<Effect>();
-}
-
-[System.Serializable]
-public class Effect
-{
-    public string name;
-    public string desc;
-}
