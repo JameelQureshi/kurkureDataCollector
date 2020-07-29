@@ -126,7 +126,28 @@ public class ShopFormManager : MonoBehaviour
 
     public void OpenVerify(){
 
-       if (shopName.text != "" && sku1.text != "" && sku2.text != "" && sku3.text != ""
+        for (int i = 0; i < ShopDataCreator.shopStatus.id.Count; i++)
+        {
+            if (CurrentID == ShopDataCreator.shopStatus.id[i])
+            {
+                if (ShopDataCreator.shopStatus.image1Status[i] == "Done" &&
+                    ShopDataCreator.shopStatus.image2Status[i] == "Done" &&
+                    ShopDataCreator.shopStatus.image3Status[i] == "Done" &&
+                    ShopDataCreator.shopStatus.image4Status[i] == "Done")
+                {
+
+                }
+                else
+                {
+                    PopupManager.instance.OpenPopup("Please Capture All the Images");
+                    return;
+                }
+
+            }
+        }
+
+
+        if (shopName.text != "" && sku1.text != "" && sku2.text != "" && sku3.text != ""
             && sku4.text != "" && sku5.text != "" && sku6.text != "")
             {
                 UIManager.instance.ActivateScreen(4);
@@ -134,7 +155,8 @@ public class ShopFormManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Fill All the inputs");
+               
+                PopupManager.instance.OpenPopup("Please Fill All the Inputs");
                 return;
             }
     }
@@ -161,7 +183,7 @@ public class ShopFormManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Fill All the inputs");
+                    PopupManager.instance.OpenPopup("Please Fill All the Inputs");
                     return;
                 }
             }
@@ -185,7 +207,7 @@ public class ShopFormManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Imgages Need to be Done");
+                    PopupManager.instance.OpenPopup("Please Capture All the Images");
                     return;
                 }
 

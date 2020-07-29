@@ -40,7 +40,7 @@ public class VerifyPage : MonoBehaviour
         {
             if (!toggle.isOn)
             {
-                Debug.Log("Please Tick All Options");
+                PopupManager.instance.OpenPopup("Please Mark All Options");
                 return;
             }
         }
