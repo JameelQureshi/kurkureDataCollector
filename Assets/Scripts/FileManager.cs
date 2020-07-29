@@ -162,7 +162,7 @@ public class FileManager : MonoBehaviour
             Debug.Log("Function Called");
             // CreateFolders();
             //CompressFolder();
-            MoveData();
+            //MoveData();
             //StartCoroutine(UploadUserData());
         }
     }

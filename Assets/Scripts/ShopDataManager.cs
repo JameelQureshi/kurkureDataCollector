@@ -45,7 +45,7 @@ namespace ShopData {
                 //CreateShopStatusFile();
                 //LoginManager.LoginSuccess = "success";
                 //LoginManager.UserID = 1;
-                CurrentDayShopInfo = "UnLoaded";
+                //CurrentDayShopInfo = "UnLoaded";
             }
         }
 

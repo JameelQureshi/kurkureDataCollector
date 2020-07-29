@@ -13,11 +13,12 @@ namespace ShopData {
         public GameObject prefab;
         public GameObject canvas;
         public Text dayText;
-
+        public InputField searchBar;
         public static ShopDataCreator instance;
         public static DataManager.DayData dayData;
         public static ShopStatus shopStatus;
 
+        public  List<GameObject> shopList;
 
         public void Awake()
         {
@@ -30,6 +31,8 @@ namespace ShopData {
                 Destroy(gameObject);
             }
         }
+
+
 
         public static void CreateShopList()
         {
@@ -48,12 +51,42 @@ namespace ShopData {
 
         }
 
+        public void OnSearchValueChanged()
+        {
+            string searchQuery = searchBar.text;
+            searchQuery.ToLower();
 
+            if (searchBar.text != "")
+            {
+                foreach (GameObject item in shopList)
+                {
+                    string shopNameString = item.GetComponent<ShopItem>().shopNameText.text.ToLower();
+                    if (shopNameString.Contains(searchBar.text))
+                    {
+                        item.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        item.gameObject.SetActive(false);
+                    }
+                }
+
+            }
+            else
+            {
+                foreach (GameObject item in shopList)
+                {
+                   item.gameObject.SetActive(true);
+                }
+
+            }
+        }
 
         public void Populate()
         {
             GameObject item; // Create GameObject instance
             dayText.text = "Day " + LoginManager.CurrentDay;
+            shopList = new List<GameObject>();
 
             try
             {
@@ -61,6 +94,7 @@ namespace ShopData {
                 {
                     item = Instantiate(prefab, transform);
                     item.GetComponent<ShopItem>().Init(dayData.shops[i].shop_Name, (i + 1).ToString(), dayData.shops[i].id, CheackShopStatus(dayData.shops[i].id));
+                    shopList.Add(item);
                 }
             }
             catch (Exception e)
