@@ -633,8 +633,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1317846193}
-        m_MethodName: SubmitData
+      - m_Target: {fileID: 1097678702}
+        m_MethodName: Submit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -992,9 +992,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1049007759}
-        m_MethodName: ActivateScreen
-        m_Mode: 3
+      - m_Target: {fileID: 505394880}
+        m_MethodName: StartYourDay
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1703,7 +1703,7 @@ RectTransform:
   - {fileID: 154808912}
   - {fileID: 2116256527}
   m_Father: {fileID: 1612558211}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3754,7 +3754,7 @@ RectTransform:
   - {fileID: 896651017}
   - {fileID: 2002411232}
   m_Father: {fileID: 1612558211}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6856,7 +6856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &975252538
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7279,6 +7279,7 @@ MonoBehaviour:
   - {fileID: 328548705}
   - {fileID: 1933127043}
   - {fileID: 99594498}
+  - {fileID: 975252537}
 --- !u!1 &1055296186
 GameObject:
   m_ObjectHideFlags: 0
@@ -7720,6 +7721,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1092550244}
   m_CullTransparentMesh: 0
+--- !u!1 &1097678700
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1097678701}
+  - component: {fileID: 1097678702}
+  m_Layer: 0
+  m_Name: VerifyPage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1097678701
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097678700}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1238881790}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1097678702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097678700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 800c1e22e6dc64f59aeb9b67c1644f05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skus:
+  - {fileID: 692017586}
+  - {fileID: 644263774}
+  - {fileID: 343408162}
+  - {fileID: 1035701150}
+  - {fileID: 1112402475}
+  - {fileID: 266303654}
+  skuValues:
+  - {fileID: 896651018}
+  - {fileID: 1430404803}
+  - {fileID: 1705321441}
+  - {fileID: 1458204640}
+  - {fileID: 154808913}
+  - {fileID: 295681908}
+  cheack:
+  - {fileID: 892176873}
+  - {fileID: 2116256528}
+  - {fileID: 812130741}
+  - {fileID: 1409410775}
+  - {fileID: 1232291100}
+  - {fileID: 2002411233}
+  address: {fileID: 867766459}
 --- !u!1 &1098093179
 GameObject:
   m_ObjectHideFlags: 0
@@ -8601,7 +8667,7 @@ RectTransform:
   - {fileID: 1430404802}
   - {fileID: 1232291099}
   m_Father: {fileID: 1612558211}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9370,6 +9436,7 @@ Transform:
   - {fileID: 505394879}
   - {fileID: 1317846192}
   - {fileID: 1217651128}
+  - {fileID: 1097678701}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10087,7 +10154,7 @@ RectTransform:
   - {fileID: 1705321440}
   - {fileID: 1409410774}
   m_Father: {fileID: 1612558211}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11470,7 +11537,7 @@ RectTransform:
   - {fileID: 295681907}
   - {fileID: 892176872}
   m_Father: {fileID: 1612558211}
-  m_RootOrder: 0
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11795,12 +11862,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1548381580}
-  - {fileID: 302609342}
-  - {fileID: 2145828633}
-  - {fileID: 1407678523}
-  - {fileID: 1205453521}
   - {fileID: 540116403}
+  - {fileID: 1205453521}
+  - {fileID: 1407678523}
+  - {fileID: 2145828633}
+  - {fileID: 302609342}
+  - {fileID: 1548381580}
   - {fileID: 116506428}
   - {fileID: 600640018}
   m_Father: {fileID: 975252538}
@@ -13229,7 +13296,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -13427,7 +13494,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1317846193}
-        m_MethodName: SubmitData
+        m_MethodName: OpenVerify
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14740,7 +14807,7 @@ RectTransform:
   - {fileID: 1458204639}
   - {fileID: 812130740}
   m_Father: {fileID: 1612558211}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

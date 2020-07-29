@@ -65,9 +65,9 @@ public class ShopFormManager : MonoBehaviour
 
     public void CheackCaptureImageStatus(int id)
     {
-        for (int i=0;i<ShopDataCreator.shopStatus.id.Count;i++)
+        for (int i = 0; i < ShopDataCreator.shopStatus.id.Count; i++)
         {
-            if (id== ShopDataCreator.shopStatus.id[i])
+            if (id == ShopDataCreator.shopStatus.id[i])
             {
                 if (ShopDataCreator.shopStatus.image1Status[i] == "Done")
                 {
@@ -124,10 +124,23 @@ public class ShopFormManager : MonoBehaviour
 
     }
 
+    public void OpenVerify(){
+
+       if (shopName.text != "" && sku1.text != "" && sku2.text != "" && sku3.text != ""
+            && sku4.text != "" && sku5.text != "" && sku6.text != "")
+            {
+                UIManager.instance.ActivateScreen(4);
+                VerifyPage.instance.OpenVerify(skuText, shopName.text, new string[] {sku1.text,sku2.text,sku3.text,sku4.text,sku5.text,sku6.text});
+            }
+            else
+            {
+                Debug.Log("Fill All the inputs");
+                return;
+            }
+    }
+
     public void SubmitData()
     {
-
-
 
         for (int i = 0; i < ShopDataCreator.dayData.shops.Count; i++)
         {
