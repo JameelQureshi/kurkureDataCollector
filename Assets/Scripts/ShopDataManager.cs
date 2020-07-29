@@ -115,6 +115,7 @@ namespace ShopData {
             shopStatus.image4Status = new List<string>();
             shopStatus.address = new List<string>();
             shopStatus.sku = new List<string>();
+            shopStatus.uploadStatus = new List<string>();
 
             for (int i =0 ; i<shopsInfo.data.shops.Count;i++ )
             {
@@ -126,6 +127,7 @@ namespace ShopData {
                 shopStatus.image3Status.Add("Pending");
                 shopStatus.image4Status.Add("Pending");
                 shopStatus.address.Add(shopsInfo.data.shops[i].address);
+                shopStatus.uploadStatus.Add("Pending");
             }
             for (int i = 0; i < shopsInfo.data.sku.Count; i++)
             {
@@ -187,6 +189,7 @@ namespace ShopData {
         public List<string> image4Status;
         public List<string> address;
         public List<string> sku;
+        public List<string> uploadStatus;
 
     }
 }

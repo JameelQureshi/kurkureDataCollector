@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using ShopData;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,8 @@ using UnityEngine.UI;
 
 public class ShopFormManager : MonoBehaviour
 {
+
+
     public static int CurrentID
     {
         set
@@ -66,10 +69,40 @@ public class ShopFormManager : MonoBehaviour
         {
             if (id== ShopDataCreator.shopStatus.id[i])
             {
-                image1.interactable &= ShopDataCreator.shopStatus.image1Status[i] != "Done";
-                image2.interactable &= ShopDataCreator.shopStatus.image2Status[i] != "Done";
-                image3.interactable &= ShopDataCreator.shopStatus.image3Status[i] != "Done";
-                image4.interactable &= ShopDataCreator.shopStatus.image4Status[i] != "Done";
+                if (ShopDataCreator.shopStatus.image1Status[i] == "Done")
+                {
+                    image1.interactable = false;
+                }
+                else
+                {
+                    image1.interactable = true;
+                }
+
+                if (ShopDataCreator.shopStatus.image2Status[i] == "Done")
+                {
+                    image2.interactable = false;
+                }
+                else
+                {
+                    image2.interactable = true;
+                }
+                if (ShopDataCreator.shopStatus.image3Status[i] == "Done")
+                {
+                    image3.interactable = false;
+                }
+                else
+                {
+                    image3.interactable = true;
+                }
+                if (ShopDataCreator.shopStatus.image4Status[i] == "Done")
+                {
+                    image4.interactable = false;
+                }
+                else
+                {
+                    image4.interactable = true;
+                }
+
                 address.text = ShopDataCreator.shopStatus.address[i];
             }
         }
@@ -135,7 +168,7 @@ public class ShopFormManager : MonoBehaviour
 
                     ShopDataCreator.SaveCurrentProgress();
 
-                    SceneManager.LoadScene(0);
+                    MoveCompletedData();
                 }
                 else
                 {
@@ -145,6 +178,84 @@ public class ShopFormManager : MonoBehaviour
 
             }
         }
+    }
+
+    public void MoveCompletedData()
+    {
+        DataManager.DayData dayData;
+
+
+        string[] file = Directory.GetFiles(Application.persistentDataPath + "/Completed/");
+
+        Debug.Log(file.Length);
+        if (file.Length <= 4)
+        {
+            Debug.Log("No Previous Data");
+            dayData = new DataManager.DayData
+            {
+                shops = new List<DataManager.Shop>()
+            };
+        }
+        else
+        {
+            string path = Application.persistentDataPath + "/Completed/DayInfo.json";
+            string contents = File.ReadAllText(path);
+            dayData = JsonUtility.FromJson<DataManager.DayData>(contents);
+        }
+
+        for (int i = 0; i < ShopDataCreator.dayData.shops.Count; i++)
+        {
+            if (CurrentID == ShopDataCreator.dayData.shops[i].id)
+            {
+                for (int j = 0; j < ShopDataCreator.shopStatus.id.Count; j++)
+                {
+                    if (CurrentID == ShopDataCreator.shopStatus.id[j])
+                    {
+                        if (ShopDataCreator.shopStatus.uploadStatus[j]=="Pending")
+                        {
+                            dayData.M_Id = ShopDataCreator.dayData.M_Id;
+                            dayData.day = ShopDataCreator.dayData.day;
+                            dayData.checkIn = ShopDataCreator.dayData.checkIn;
+                            dayData.checkOut = ShopDataCreator.dayData.checkOut;
+                            dayData.shops.Add(ShopDataCreator.dayData.shops[i]);
+
+                            string tempPath = Application.persistentDataPath + "/Data/";
+                            foreach (string filepath in Directory.GetFiles(tempPath, "*.jpg"))
+                            {
+                               
+                                string path = Application.persistentDataPath + "/Data/"+ShopDataCreator.dayData.shops[i].pic_Name_1+".jpg";
+                                byte[] contents = File.ReadAllBytes(path);
+                                File.WriteAllBytes(Application.persistentDataPath + "/Completed/" + ShopDataCreator.dayData.shops[i].pic_Name_1 + ".jpg", contents);
+                                 
+                                 path = Application.persistentDataPath + "/Data/" + ShopDataCreator.dayData.shops[i].pic_Name_2 + ".jpg";
+                                 contents = File.ReadAllBytes(path);
+                                File.WriteAllBytes(Application.persistentDataPath + "/Completed/" + ShopDataCreator.dayData.shops[i].pic_Name_2 + ".jpg", contents);
+
+                                path = Application.persistentDataPath + "/Data/" + ShopDataCreator.dayData.shops[i].pic_Name_3 + ".jpg";
+                                 contents = File.ReadAllBytes(path);
+                                File.WriteAllBytes(Application.persistentDataPath + "/Completed/" + ShopDataCreator.dayData.shops[i].pic_Name_3 + ".jpg", contents);
+                                 
+                                 path = Application.persistentDataPath + "/Data/" + ShopDataCreator.dayData.shops[i].pic_Name_4 + ".jpg";
+                                 contents = File.ReadAllBytes(path);
+                                File.WriteAllBytes(Application.persistentDataPath + "/Completed/" + ShopDataCreator.dayData.shops[i].pic_Name_4 + ".jpg", contents);
+
+                            }
+
+                            string dataToSave = JsonUtility.ToJson(dayData);
+                            File.WriteAllText(Application.persistentDataPath + "/Completed/DayInfo.json", dataToSave);
+                            ShopDataCreator.shopStatus.uploadStatus[j] = "Ready";
+                            UIManager.isShopSelected = false;
+                            SceneManager.LoadScene(0);
+
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+
     }
 
 }

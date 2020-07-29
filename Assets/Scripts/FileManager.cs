@@ -61,7 +61,15 @@ public class FileManager : MonoBehaviour
 
     public void CompressFolder()
     {
-        string source = Application.persistentDataPath+"/Data";
+        string[] file = Directory.GetFiles(Application.persistentDataPath + "/Completed/");
+
+        if (file.Length <= 4) {
+            Debug.Log("No Data to upload!");
+            return;
+         }
+
+
+        string source = Application.persistentDataPath+ "/Completed";
         ZipIndex++;
         ZipFileName = LoginManager.UserID+"_"+ LoginManager.CurrentDay+"_"+ZipIndex;
         string destination = Application.persistentDataPath+"/Zips/"+ ZipFileName+ ".zip";
@@ -73,20 +81,18 @@ public class FileManager : MonoBehaviour
     {
         var zipFolder = Directory.CreateDirectory(Application.persistentDataPath + "/Zips/"); // returns a DirectoryInfo object
         var dataFolder = Directory.CreateDirectory(Application.persistentDataPath + "/Data/"); // returns a DirectoryInfo object
+        var completedFolder = Directory.CreateDirectory(Application.persistentDataPath + "/Completed/"); // returns a DirectoryInfo object
+       
     }
 
     void DeleteAllFiles()
     {
 
-        foreach (var file in Directory.GetFiles(Application.persistentDataPath + "/Data/"))
+        foreach (var file in Directory.GetFiles(Application.persistentDataPath + "/Completed/"))
         {
             FileInfo file_info = new FileInfo(file);
             Debug.Log(file_info);
-            if (!file_info.ToString().Contains(".json"))
-            {
-                file_info.Delete();
-            }
-           
+            file_info.Delete();
         }
         StartCoroutine(UploadUserData());
         loadingObject.SetActive(true);
@@ -128,6 +134,20 @@ public class FileManager : MonoBehaviour
 
 
     }
+
+    public void MoveData()
+    {
+        string tempPath = Application.persistentDataPath + "/Data/";
+        foreach (string file in Directory.GetFiles(tempPath, "*.jpg"))
+        {
+
+            string des = file.Replace(Application.productName + "/Data", Application.productName + "/Completed");
+            Debug.Log(file);
+            Debug.Log(des);
+            File.Move(file,des);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -136,12 +156,13 @@ public class FileManager : MonoBehaviour
             //DeleteAllFiles();
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.M))
         {
             //SaveIntoJson();
             Debug.Log("Function Called");
-            CreateFolders();
+            // CreateFolders();
             //CompressFolder();
+            MoveData();
             //StartCoroutine(UploadUserData());
         }
     }

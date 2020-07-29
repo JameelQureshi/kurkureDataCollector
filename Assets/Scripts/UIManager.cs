@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     public GameObject[] screens;
+    public static bool isShopSelected;
 
     public static UIManager instance;
 
@@ -52,6 +53,13 @@ public class UIManager : MonoBehaviour
         {
             ActivateScreen(0);
         }
+        if (isShopSelected)
+        {
+            ActivateScreen(3);
+            ShopFormManager.instance.UpdateForm();
+        }
+
+
     }
 
 
@@ -69,6 +77,7 @@ public class UIManager : MonoBehaviour
     public void OpenCamera(int currentImage)
     {
         Screenshot.CurrentImage = currentImage;
+        isShopSelected = true;
         SceneManager.LoadScene(1);
     }
 
