@@ -85,7 +85,7 @@ namespace ShopData {
         public void Populate()
         {
             GameObject item; // Create GameObject instance
-            dayText.text = "Day " + LoginManager.CurrentDay;
+            dayText.text = LoginManager.Username;
             shopList = new List<GameObject>();
 
             try

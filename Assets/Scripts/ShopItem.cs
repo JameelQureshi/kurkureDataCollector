@@ -33,6 +33,15 @@ public class ShopItem : MonoBehaviour
     void TaskOnClick()
     {
         Debug.Log(shopID);
+        if (ShopFormManager.CurrentID == shopID)
+        {
+            Debug.Log("Same Shop Opened");
+        }
+        else
+        {
+            ShopFormManager.ResetSkus();
+        }
+
         UIManager.instance.ActivateScreen(3); // Shop   inputScreen is at 3
         ShopFormManager.CurrentID = shopID;
         ShopFormManager.instance.UpdateForm();
@@ -48,6 +57,7 @@ public class ShopItem : MonoBehaviour
 
             }
         }
+
 
     }
 }

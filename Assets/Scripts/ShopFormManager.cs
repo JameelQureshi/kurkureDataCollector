@@ -43,6 +43,7 @@ public class ShopFormManager : MonoBehaviour
     public Button image4;
     public Text address;
     public InputField shopName;
+    public InputField mobileNumber;
     public Dropdown dropdownShopStatus;
 
     public InputField sku1;
@@ -61,6 +62,50 @@ public class ShopFormManager : MonoBehaviour
     {
         CheackCaptureImageStatus(CurrentID);
         UpdateAddress(CurrentID);
+        UpdateSKUForm();
+    }
+
+    public static void ResetSkus()
+    {
+        for (int i = 1; i<=6; i++)
+        {
+            PlayerPrefs.SetString("SKU"+i,"");
+        }
+        PlayerPrefs.SetInt("ShopStatus",0);
+    }
+    public void SaveSkus()
+    {
+        PlayerPrefs.SetString("SKU1", sku1.text);
+        PlayerPrefs.SetString("SKU2", sku2.text);
+        PlayerPrefs.SetString("SKU3", sku3.text);
+        PlayerPrefs.SetString("SKU4", sku4.text);
+        PlayerPrefs.SetString("SKU5", sku5.text);
+        PlayerPrefs.SetString("SKU6", sku6.text);
+        PlayerPrefs.SetInt("ShopStatus", dropdownShopStatus.value);
+        for (int i = 1; i <= 6; i++)
+        {
+            Debug.Log(PlayerPrefs.GetString("SKU" + i)); 
+        }
+        Debug.Log(PlayerPrefs.GetInt("ShopStatus"));
+
+    }
+    public void UpdateSKUForm()
+    {
+        dropdownShopStatus.value = PlayerPrefs.GetInt("ShopStatus");
+        sku1.text = PlayerPrefs.GetString("SKU1");
+        sku2.text = PlayerPrefs.GetString("SKU2");
+        sku3.text = PlayerPrefs.GetString("SKU3");
+        sku4.text = PlayerPrefs.GetString("SKU4");
+        sku5.text = PlayerPrefs.GetString("SKU5");
+        sku6.text = PlayerPrefs.GetString("SKU6");
+
+        dropdownShopStatus.onValueChanged.AddListener(delegate { SaveSkus(); });
+        sku1.onEndEdit.AddListener(delegate { SaveSkus(); });
+        sku2.onEndEdit.AddListener(delegate { SaveSkus(); });
+        sku3.onEndEdit.AddListener(delegate { SaveSkus(); });
+        sku4.onEndEdit.AddListener(delegate { SaveSkus(); });
+        sku5.onEndEdit.AddListener(delegate { SaveSkus(); });
+        sku6.onEndEdit.AddListener(delegate { SaveSkus(); });
     }
 
     public void CheackCaptureImageStatus(int id)
@@ -110,6 +155,7 @@ public class ShopFormManager : MonoBehaviour
         {
             skuText[i].text = ShopDataCreator.shopStatus.sku[i];
         }
+
     }
 
     public void UpdateAddress(int id)
@@ -181,6 +227,7 @@ public class ShopFormManager : MonoBehaviour
                     ShopDataCreator.dayData.shops[i].sku[3].count = int.Parse(sku4.text);
                     ShopDataCreator.dayData.shops[i].sku[4].count = int.Parse(sku5.text);
                     ShopDataCreator.dayData.shops[i].sku[5].count = int.Parse(sku6.text);
+                    ShopDataCreator.dayData.shops[i].contact_Number = mobileNumber.text;
                 }
                 else
                 {

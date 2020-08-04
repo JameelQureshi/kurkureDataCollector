@@ -8,8 +8,8 @@ public class LoginManager : MonoBehaviour
 
     const string login_api = "http://shopanalytica.com/public/api/login";
     const string logut_api = "http://shopanalytica.com/public/api/logout";
-    public InputField username;
-    public InputField password; 
+    public InputField usernameInput;
+    public InputField passwordInput; 
 
     public static string LoginSuccess
     {
@@ -47,6 +47,18 @@ public class LoginManager : MonoBehaviour
         }
     }
 
+    public static string Username
+    {
+        set
+        {
+            PlayerPrefs.SetString("Username", value);
+        }
+        get
+        {
+            return PlayerPrefs.GetString("Username");
+        }
+    }
+
     public static int CurrentDay
     {
         set
@@ -61,7 +73,7 @@ public class LoginManager : MonoBehaviour
 
     public void LoginUser()
     {
-        if (username.text!="" && password.text!="")
+        if (usernameInput.text!="" && passwordInput.text!="")
         {
             StartCoroutine(PostLoginRequest());
         }
@@ -75,8 +87,8 @@ public class LoginManager : MonoBehaviour
     {
 
         WWWForm form = new WWWForm();
-        form.AddField("username", username.text);
-        form.AddField("password", password.text);
+        form.AddField("username", usernameInput.text);
+        form.AddField("password", passwordInput.text);
 
         UnityWebRequest webRequest = UnityWebRequest.Post(login_api, form);
 
@@ -102,6 +114,7 @@ public class LoginManager : MonoBehaviour
                 LoginSuccess = "success";
                 UserID = user.data.id;
                 Token = user.data.token;
+                Username = user.data.username;
                 FileManager.instance.CreateFolders();
                 UIManager.instance.CheackLogin();
             }
@@ -159,6 +172,7 @@ public class Data
 {
     public int id;
     public string token;
+    public string username;
 }
 
 [System.Serializable]
