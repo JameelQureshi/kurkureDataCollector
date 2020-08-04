@@ -40,8 +40,8 @@ public class DataManager : MonoBehaviour
             shop.pic_Name_4 = "";
             shop.contact_Number = "";
             shop.location = "";
-            shop.checkIn = DateTime.UtcNow.ToString();
-            shop.checkOut = DateTime.UtcNow.ToString();
+            shop.checkIn ="";
+            shop.checkOut = "";
             shop.sku = new List<SkuData>();
             for (int j = 0; j < shopsInfo.data.sku.Count; j++)
             {

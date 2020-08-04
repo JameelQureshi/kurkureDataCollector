@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using ShopData;
 using UnityEngine;
 using UnityEngine.UI;
 public class ShopItem : MonoBehaviour
@@ -34,5 +36,18 @@ public class ShopItem : MonoBehaviour
         UIManager.instance.ActivateScreen(3); // Shop   inputScreen is at 3
         ShopFormManager.CurrentID = shopID;
         ShopFormManager.instance.UpdateForm();
+
+        for (int i = 0; i < ShopDataCreator.dayData.shops.Count; i++)
+        {
+            if (shopID == ShopDataCreator.dayData.shops[i].id)
+            {
+                if (ShopDataCreator.dayData.shops[i].checkIn.Length < 2)
+                {
+                    ShopDataCreator.dayData.shops[i].checkIn = DateTime.UtcNow.ToString();
+                }
+
+            }
+        }
+
     }
 }

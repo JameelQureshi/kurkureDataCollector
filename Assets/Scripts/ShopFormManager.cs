@@ -169,6 +169,7 @@ public class ShopFormManager : MonoBehaviour
             if (CurrentID == ShopDataCreator.dayData.shops[i].id)
             {
                 ShopDataCreator.dayData.shops[i].SS_Id = dropdownShopStatus.value;
+                ShopDataCreator.dayData.checkOut = DateTime.UtcNow.ToString();
                 if (shopName.text!= "" && sku1.text!= "" && sku2.text!="" && sku3.text!= ""
                 && sku4.text!="" && sku5.text!="" && sku6.text!= "" )
                 {
