@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Android;
 using UnityEngine.SceneManagement;
@@ -10,6 +12,19 @@ public class UIManager : MonoBehaviour
     public static bool isShopSelected;
 
     public static UIManager instance;
+
+    public static string StartDate
+    {
+        set
+        {
+            PlayerPrefs.SetString("StartDate",value);
+        }
+        get
+        {
+            return PlayerPrefs.GetString("StartDate"); ;
+        }
+    }
+
 
     public void Awake()
     {
@@ -60,7 +75,31 @@ public class UIManager : MonoBehaviour
         }
 
 
+        try {
+            DateTime startDateTime = DateTime.Parse(PlayerPrefs.GetString("StartDate"));
+            TimeSpan duration = DateTime.Now - startDateTime;
+            Debug.Log(duration.Days);
+            if (duration.Days >= 6)
+            {
+                foreach (var file in Directory.GetFiles(Application.persistentDataPath + "/Data/"))
+                {
+                    FileInfo file_info = new FileInfo(file);
+                    Debug.Log(file_info);
+                    file_info.Delete();
+                }
+                ShopData.ShopDataManager.CurrentDayShopInfo = "UnLoaded";
+
+            }
+        }
+        catch (Exception e){
+            Debug.Log("Error: "+ e); }
+
+
+
+
     }
+
+
 
 
     public void ActivateScreen(int index)

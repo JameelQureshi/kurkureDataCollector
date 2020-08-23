@@ -13,7 +13,7 @@ namespace ShopData {
 
         public ShopsInfo shopsInfo;
         public static ShopDataManager instance;
-        const string getShopApi = "http://shopanalytica.com/public/api/getShopsByUser";
+        const string getShopApi = "https://shopanalytica.com/api/getShopsByUser";
 
         public static string CurrentDayShopInfo
         {
@@ -48,6 +48,8 @@ namespace ShopData {
                 //CurrentDayShopInfo = "UnLoaded";
             }
         }
+
+        
 
         public void StartYourDay()
         {
@@ -96,6 +98,7 @@ namespace ShopData {
                 shopsInfo = JsonUtility.FromJson<ShopsInfo>(webRequest.downloadHandler.text);
                 if (shopsInfo.success)
                 {
+                    UIManager.StartDate = DateTime.Now.ToString();
                     DataManager.instance.CreateCurrentDayShopInfo(shopsInfo);
                     CreateShopStatusFile();
                 }

@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class LoginManager : MonoBehaviour
 {
 
-    const string login_api = "http://shopanalytica.com/public/api/login";
-    const string logut_api = "http://shopanalytica.com/public/api/logout";
+    const string login_api = "https://shopanalytica.com/api/login";
+    const string logut_api = "https://shopanalytica.com/api/logout";
     public InputField usernameInput;
     public InputField passwordInput; 
 

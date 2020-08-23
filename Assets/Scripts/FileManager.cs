@@ -54,9 +54,45 @@ public class FileManager : MonoBehaviour
         }
 
     }
+    public void StartUploadingProcess()
+    {
+        StartCoroutine(CheackServer());
+    }
+
+    IEnumerator CheackServer()
+    {
+
+        WWWForm form = new WWWForm();
+
+        UnityWebRequest webRequest = UnityWebRequest.Get("https://shopanalytica.com/api/check-server");
+
+        webRequest.SendWebRequest();
+
+        while (!webRequest.isDone)
+        {
+            yield return null;
+
+            // Progress is always set to 1 on android
+            // Debug.LogFormat("Progress: {0}", webRequest.uploadProgress);
+        }
 
 
+        if (webRequest.isHttpError || webRequest.isNetworkError)
+        {
+            Debug.Log(webRequest.error);
+            PopupManager.instance.OpenPopup("Uploading Failed!");
+        }
+        else
+        {
+            Debug.Log("Request Done!:" + webRequest.downloadHandler.text);
+            ServerResponse serverResponse = JsonUtility.FromJson<ServerResponse>(webRequest.downloadHandler.text);
+            if (serverResponse.data == "Success")
+            {
+                CompressFolder();
+            }
+        }
 
+    }
 
 
     public void CompressFolder()
@@ -64,6 +100,7 @@ public class FileManager : MonoBehaviour
         string[] file = Directory.GetFiles(Application.persistentDataPath + "/Completed/");
 
         if (file.Length <= 4) {
+            PopupManager.instance.OpenPopup("No Data to upload!");
             Debug.Log("No Data to upload!");
             return;
          }
@@ -102,7 +139,7 @@ public class FileManager : MonoBehaviour
 
     IEnumerator UploadUserData()
     {
-
+        UploadFileManager.AddFileName(ZipFileName);
         WWWForm form = new WWWForm();
         string path = Application.persistentDataPath + "/Zips/"+ZipFileName+".zip";
         byte[] bytes = File.ReadAllBytes(path);
@@ -128,6 +165,7 @@ public class FileManager : MonoBehaviour
         else {
             Debug.Log("Request Done!:" + webRequest.downloadHandler.text);
             loadingObject.SetActive(false);
+            UploadFileManager.RemoveDoneFileName(ZipFileName);
             //ShopData.ShopDataManager.CurrentDayShopInfo = "UnLoaded";
         }
 
@@ -168,3 +206,9 @@ public class FileManager : MonoBehaviour
     }
 }
 
+[Serializable]
+public class ServerResponse
+{
+    public bool success;
+    public string data;
+}
