@@ -105,6 +105,7 @@ public class LoginManager : MonoBehaviour
 
         if (webRequest.isHttpError || webRequest.isNetworkError) {
             Debug.Log(webRequest.error);
+            PopupManager.instance.OpenPopup("Login Failed!");
         }
         else {
             Debug.Log("Request Done!:" + webRequest.downloadHandler.text);
@@ -117,6 +118,10 @@ public class LoginManager : MonoBehaviour
                 Username = user.data.username;
                 FileManager.instance.CreateFolders();
                 UIManager.instance.CheackLogin();
+            }
+            else
+            {
+                PopupManager.instance.OpenPopup("Login Failed!");
             }
 
         }
@@ -145,6 +150,7 @@ public class LoginManager : MonoBehaviour
         if (webRequest.isHttpError || webRequest.isNetworkError)
         {
             Debug.Log(webRequest.error);
+            PopupManager.instance.OpenPopup("Logout Failed!");
         }
         else
         {
@@ -154,6 +160,10 @@ public class LoginManager : MonoBehaviour
             {
                 LoginSuccess = "";
                 UIManager.instance.ActivateScreen(0); // Login Screen is at 0
+            }
+            else
+            {
+                PopupManager.instance.OpenPopup("Logout Failed!");
             }
 
         }

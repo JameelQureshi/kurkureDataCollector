@@ -6,6 +6,8 @@ public class PopupManager : MonoBehaviour
 {
 
     public GameObject prefab;
+    public GameObject loading;
+    private static GameObject m_loading;
     public static PopupManager instance;
 
     public void Awake()
@@ -23,6 +25,22 @@ public class PopupManager : MonoBehaviour
     {
         GameObject popup = Instantiate(prefab);
         popup.GetComponent<PopupItem>().Init(message);
+    }
+
+    public void SetLoading(bool status)
+    {
+        if (status)
+        {
+            m_loading = Instantiate(loading);
+        }
+        else
+        {
+            if (m_loading!=null)
+            {
+                Destroy(m_loading);
+            }
+        }
+        
     }
 
 }

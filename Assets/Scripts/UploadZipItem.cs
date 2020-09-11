@@ -56,6 +56,10 @@ public class UploadZipItem : MonoBehaviour
             {
                 StartCoroutine(UploadUserData());
             }
+            else
+            {
+                PopupManager.instance.OpenPopup("Uploading Failed!");
+            }
         }
 
     }
@@ -65,6 +69,9 @@ public class UploadZipItem : MonoBehaviour
     {
         uploadButton.SetActive(false);
         m_statusMessage.SetActive(true);
+
+        // Turn on loading
+        PopupManager.instance.SetLoading(true);
 
         WWWForm form = new WWWForm();
         string path = Application.persistentDataPath + "/Zips/" + fileName + ".zip";
@@ -80,19 +87,23 @@ public class UploadZipItem : MonoBehaviour
             yield return null;
 
             // Progress is always set to 1 on android
-            m_statusMessage.GetComponent<Text>().text = webRequest.uploadProgress * 100 + "%";
-
+            //m_statusMessage.GetComponent<Text>().text = webRequest.uploadProgress * 100 + "%";
+            m_statusMessage.GetComponent<Text>().text = "Uploading...";
         }
 
 
         if (webRequest.isHttpError || webRequest.isNetworkError)
         {
             Debug.Log(webRequest.error);
+            PopupManager.instance.OpenPopup("Upload Failed!");
+            PopupManager.instance.SetLoading(false);
         }
         else
         {
             Debug.Log("Request Done!:" + webRequest.downloadHandler.text);
             UploadFileManager.RemoveDoneFileName(fileName);
+            PopupManager.instance.OpenPopup("Upload Done!");
+            PopupManager.instance.SetLoading(false);
         }
 
 

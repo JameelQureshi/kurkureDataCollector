@@ -108,7 +108,7 @@ public class FileManager : MonoBehaviour
 
         string source = Application.persistentDataPath+ "/Completed";
         ZipIndex++;
-        ZipFileName = LoginManager.UserID+"_"+ LoginManager.CurrentDay+"_"+ZipIndex;
+        ZipFileName = LoginManager.UserID + "_" + LoginManager.CurrentDay+ "_" + ZipIndex;
         string destination = Application.persistentDataPath+"/Zips/"+ ZipFileName+ ".zip";
         ZipFile.CreateFromDirectory(source,destination);
         DeleteAllFiles();
@@ -139,6 +139,8 @@ public class FileManager : MonoBehaviour
 
     IEnumerator UploadUserData()
     {
+        PopupManager.instance.SetLoading(true);
+
         UploadFileManager.AddFileName(ZipFileName);
         WWWForm form = new WWWForm();
         string path = Application.persistentDataPath + "/Zips/"+ZipFileName+".zip";
@@ -154,19 +156,26 @@ public class FileManager : MonoBehaviour
             yield return null;
 
             // Progress is always set to 1 on android
-            progressText.text =  webRequest.uploadProgress*100+"%";
-            progressFill.fillAmount = webRequest.uploadProgress;
+            //progressText.text =  webRequest.uploadProgress*100+"%";
+            //progressFill.fillAmount = webRequest.uploadProgress;
+
+            progressText.text =  "Uploading...";
+            progressFill.fillAmount = 0;
         }
 
 
         if (webRequest.isHttpError || webRequest.isNetworkError) {
             Debug.Log(webRequest.error);
+            PopupManager.instance.OpenPopup("Upload Failed!");
+            PopupManager.instance.SetLoading(false);
         }
         else {
             Debug.Log("Request Done!:" + webRequest.downloadHandler.text);
             loadingObject.SetActive(false);
             UploadFileManager.RemoveDoneFileName(ZipFileName);
-            //ShopData.ShopDataManager.CurrentDayShopInfo = "UnLoaded";
+            PopupManager.instance.OpenPopup("Upload Done!");
+            PopupManager.instance.SetLoading(false);
+            // ShopData.ShopDataManager.CurrentDayShopInfo = "UnLoaded";
         }
 
 

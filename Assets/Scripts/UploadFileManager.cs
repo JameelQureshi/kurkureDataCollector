@@ -58,10 +58,10 @@ public class UploadFileManager : MonoBehaviour
 
     public static void RemoveDoneFileName(string fileName)
     {
-        fileUploadStatus.fileNames.Remove(fileName);
-        string data = JsonUtility.ToJson(fileUploadStatus);
-        File.WriteAllText(Application.persistentDataPath + "/Data/UploadStatus.json", data);
-        Debug.Log("FileRemoved");
+       /// fileUploadStatus.fileNames.Remove(fileName);
+        ///string data = JsonUtility.ToJson(fileUploadStatus);
+        ///File.WriteAllText(Application.persistentDataPath + "/Data/UploadStatus.json", data);
+       /// Debug.Log("FileRemoved");
     }
     public static void AddFileName(string fileName)
     {
