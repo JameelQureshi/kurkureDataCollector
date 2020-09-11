@@ -100,6 +100,7 @@ namespace ShopData {
             catch (Exception e)
             {
                 Debug.Log(e);
+                PopupManager.instance.OpenPopup("Internal Error");
             }
 
             float width = canvas.GetComponent<RectTransform>().rect.width;

@@ -71,6 +71,13 @@ public class LoginManager : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.C)){
+            PlayerPrefs.DeleteAll();
+        }
+    }
+
     public void LoginUser()
     {
         if (usernameInput.text!="" && passwordInput.text!="")

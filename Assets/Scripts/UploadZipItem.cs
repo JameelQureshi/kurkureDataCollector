@@ -97,13 +97,17 @@ public class UploadZipItem : MonoBehaviour
             Debug.Log(webRequest.error);
             PopupManager.instance.OpenPopup("Upload Failed!");
             PopupManager.instance.SetLoading(false);
+            uploadButton.SetActive(true);
+            m_statusMessage.SetActive(false);
         }
         else
         {
             Debug.Log("Request Done!:" + webRequest.downloadHandler.text);
-            UploadFileManager.RemoveDoneFileName(fileName);
+            //UploadFileManager.RemoveDoneFileName(fileName);
             PopupManager.instance.OpenPopup("Upload Done!");
             PopupManager.instance.SetLoading(false);
+            uploadButton.SetActive(true);
+            m_statusMessage.SetActive(false);
         }
 
 

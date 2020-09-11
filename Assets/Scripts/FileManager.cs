@@ -172,7 +172,7 @@ public class FileManager : MonoBehaviour
         else {
             Debug.Log("Request Done!:" + webRequest.downloadHandler.text);
             loadingObject.SetActive(false);
-            UploadFileManager.RemoveDoneFileName(ZipFileName);
+            //UploadFileManager.RemoveDoneFileName(ZipFileName);
             PopupManager.instance.OpenPopup("Upload Done!");
             PopupManager.instance.SetLoading(false);
             // ShopData.ShopDataManager.CurrentDayShopInfo = "UnLoaded";
