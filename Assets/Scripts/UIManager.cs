@@ -79,7 +79,7 @@ public class UIManager : MonoBehaviour
             DateTime startDateTime = DateTime.Parse(PlayerPrefs.GetString("StartDate"));
             TimeSpan duration = DateTime.Now - startDateTime;
             Debug.Log(duration.Days);
-            if (duration.Days >= 6)
+            if (duration.Hours >= 168)
             {
                 foreach (var file in Directory.GetFiles(Application.persistentDataPath + "/Data/"))
                 {
